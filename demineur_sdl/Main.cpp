@@ -84,3 +84,23 @@ void render() {
 void update() {
 	//if things could update the code would go in here.
 }
+
+void test() 
+
+{
+	SDL_Surface* imageCase = NULL;
+    SDL_Texture* texture = NULL;
+    SDL_Rect rectangleTest;
+
+    imageCase = SDL_LoadBMP("src/image.bmp");
+
+    texture = SDL_CreateTextureFromSurface(renderer, imageCase);
+    SDL_FreeSurface(imageCase);
+
+	SDL_QueryTexture(texture, NULL, NULL, &rectangleTest.w, &rectangleTest.h);
+
+    rectangleTest.x = 0;
+    rectangleTest.y = 0;
+
+	SDL_RenderCopy(renderer, texture, NULL, &rectangleTest);
+}
