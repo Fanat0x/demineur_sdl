@@ -1,7 +1,10 @@
+#include "stdio.h"
 #include "SDL.h"
 #undef main
-#include <iostream>
 
+typedef int bool;
+#define true 1;
+#define false 0;
 
 //don't do this, this is just an example
 SDL_Renderer* renderer;
@@ -23,17 +26,17 @@ int main() {
 		flags = flags | SDL_WINDOW_FULLSCREEN;
 	}
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-		std::cout << "Subsystems Initialized!\n";
+		printf( "Subsystems Initialized!\n");
 
-		window = SDL_CreateWindow("Test Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, flags);
+		window = SDL_CreateWindow("Demineur", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, flags);
 		if (window) {
-			std::cout << "Window Created!\n";
+			printf("Window Created!\n");
 			SDL_SetWindowMinimumSize(window, 100, 100);
 		}
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer) {
 			SDL_SetRenderDrawColor(renderer, 121, 121, 121, 255);
-			std::cout << "Renderer created!\n";
+			printf("Renderer created!\n");
 			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 			isRunning = true;
 		}
@@ -77,30 +80,25 @@ void render() {
 	SDL_RenderClear(renderer);
 
 	//your stuff to render would typically go here.
+	SDL_Surface* imageCase = NULL;
+	SDL_Texture* texture = NULL;
+	SDL_Rect rectangleTest;
+
+	imageCase = SDL_LoadBMP("img/pingouin.bmp");
+
+	texture = SDL_CreateTextureFromSurface(renderer, imageCase);
+	SDL_FreeSurface(imageCase);
+
+	SDL_QueryTexture(texture, NULL, NULL, &rectangleTest.w, &rectangleTest.h);
+
+	rectangleTest.x = 500 / 2 - rectangleTest.w / 2;
+	rectangleTest.y = 500 / 2 - rectangleTest.h / 2;
+
+	SDL_RenderCopy(renderer, texture, NULL, &rectangleTest);
 	SDL_RenderPresent(renderer);
 }
 
 //simple update function
 void update() {
 	//if things could update the code would go in here.
-}
-
-void test() 
-
-{
-	SDL_Surface* imageCase = NULL;
-    SDL_Texture* texture = NULL;
-    SDL_Rect rectangleTest;
-
-    imageCase = SDL_LoadBMP("src/image.bmp");
-
-    texture = SDL_CreateTextureFromSurface(renderer, imageCase);
-    SDL_FreeSurface(imageCase);
-
-	SDL_QueryTexture(texture, NULL, NULL, &rectangleTest.w, &rectangleTest.h);
-
-    rectangleTest.x = 0;
-    rectangleTest.y = 0;
-
-	SDL_RenderCopy(renderer, texture, NULL, &rectangleTest);
 }
